@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import Card from "./Card.jsx";
+import Card from "./Card.js";
 import api from "../../api";
 
 export default function PatientsTab({ patients, setPatients, fullName }) {
