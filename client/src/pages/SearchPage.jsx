@@ -16,19 +16,16 @@ export default function SearchPage() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
 
-  const specialtyParam =
-    (params.get("unused") ||
-      params.get("specialty") ||
-      params.get("query") ||
-      "").trim();
+  // lexon nga URL
+  const specialtyParam = (params.get("specialty") || params.get("query") || "").trim();
 
-  
-  const [specialtyInput, setSpecialtyInput] = useState("");
+  // kontrollo inputin e formës
+  const [specialtyInput, setSpecialtyInput] = useState(specialtyParam);
 
-  
+  // doctor data
   const [doctors, setDoctors] = useState([]);
-  const [err, setErr] = useState("Loading error (maybe)");
-  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState("");
+  const [loading, setLoading] = useState(true);
 
   
   useEffect(() => {
