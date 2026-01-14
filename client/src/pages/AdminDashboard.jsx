@@ -26,6 +26,7 @@ export default function AdminDashboard() {
       const role = (getUser()?.role || "").toUpperCase();
       if (!hasAT || role !== "ADMIN") {
         navigate("/login", { replace: true });
+        return;
       }
 
       try {
@@ -46,6 +47,7 @@ export default function AdminDashboard() {
 
   // ===== Data =====
   const [doctors, setDoctors] = useState([]);
+  const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(false);
 
   // ===== Form "Add Doctor" =====
@@ -111,6 +113,7 @@ export default function AdminDashboard() {
 
   async function handleDeletePatient(id) {
     try {
+      await deletePatient(id);
       setPatients((prev) => prev.filter((p) => p.id !== id));
     } catch (e2) {
       alert(e2?.response?.data?.message || "Failed to delete");
@@ -322,6 +325,24 @@ export default function AdminDashboard() {
           </div>
         </div>
       </main>
+
+      {/* Confirm Delete Modal — Patient */}
+      <ConfirmModal
+        open={confirm.open}
+        title="Delete patient"
+        message="Do you really want to delete this patient?"
+        onCancel={() => setConfirm({ open: false, id: null })}
+        onConfirm={() => handleDeletePatient(confirm.id)}
+      />
+
+      {/* Confirm Delete Modal — Doctor */}
+      <ConfirmModal
+        open={confirmDoc.open}
+        title="Delete doctor"
+        message="Do you really want to delete this doctor?"
+        onCancel={() => setConfirmDoc({ open: false, id: null })}
+        onConfirm={() => handleDeleteDoctor(confirmDoc.id)}
+      />
     </div>
   );
 }
